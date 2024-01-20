@@ -3,9 +3,9 @@ spring:
     consul:
       host: localhost
       port: 8500
-      discovery: RESERVATION-SERVICE
+      discovery: SALLE-SERVICE
   application:
-    name: RESERVATION-SERVICE
+    name: SALLE-SERVICE
   datasource:
     url: jdbc:mysql://localhost:3306/salledb?useSSL=false
     username: root
