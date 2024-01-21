@@ -9,8 +9,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3307:3306"
-    networks:
-      - microservices-network
 
   # Service Client
   client-service:
@@ -27,11 +25,15 @@ services:
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: true
+      SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: true
+    restart: always
     depends_on:
       - mysqldb
       - consul
       - gateway-service
-    restart: always
+    networks:
+      - microservices-network
+
 
   # Service Consul
   consul:
@@ -54,6 +56,7 @@ services:
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: true
+      SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: true
     networks:
       - microservices-network
     depends_on:
@@ -69,12 +72,13 @@ services:
     expose:
       - '8082'
     environment:
-      spring.datasource.url: jdbc:mysql://mysqldb:3306/salledb?createDatabaseIfNotExist=true
+      spring.datasource.url: jdbc:mysql://mysqldb:3306/salledb?CreateDatabaseIfNotExist=true
       spring.datasource.username: root
       spring.datasource.password:
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: true
+      SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: true
     restart: always
     depends_on:
       - consul
@@ -92,17 +96,20 @@ services:
     expose:
       - '8083'
     environment:
-      spring.datasource.url: jdbc:mysql://mysqldb:3306/reservationdb?createDatabaseIfNotExist=true
+      spring.datasource.url: jdbc:mysql://mysqldb:3306/reservationdb?CreateDatabaseIfNotExist=true
       spring.datasource.username: root
       spring.datasource.password:
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: true
+      SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: true
     restart: always
     depends_on:
       - mysqldb
       - consul
       - gateway-service
+    networks:
+      - microservices-network
 
   # Service PHPMYADMIN
   phpmyadmin:
